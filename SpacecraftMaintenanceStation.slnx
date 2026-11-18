@@ -1,0 +1,4 @@
+<Solution>
+  <Project Path="SpacecraftMaintenanceStation.Domain/SpacecraftMaintenanceStation.Domain.csproj" />
+  <Project Path="SpacecraftMaintenanceStation.Tests/SpacecraftMaintenanceStation.Tests.csproj" />
+</Solution>
