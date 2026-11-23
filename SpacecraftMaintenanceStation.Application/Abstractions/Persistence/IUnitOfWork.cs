@@ -1,4 +1,4 @@
-﻿namespace SpacecraftMaintenanceStation.Application.Abstractions
+﻿namespace SpacecraftMaintenanceStation.Application.Abstractions.Persistence
 {
     public interface IUnitOfWork
     {

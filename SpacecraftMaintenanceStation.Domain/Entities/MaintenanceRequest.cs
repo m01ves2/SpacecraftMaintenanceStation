@@ -120,18 +120,6 @@ namespace SpacecraftMaintenanceStation.Domain.Entities
             ContactPhone = contactPhone;
         }
 
-        //public void ChangeTime(DateTime startTime, DateTime endTime)
-        //{
-        //    var nowTime = DateTime.Now;
-
-        //    if( startTime < nowTime || endTime <= nowTime 
-        //        || startTime >= endTime 
-        //        || startTime >= nowTime.AddDays(7) || endTime > nowTime.AddDays(7))
-        //        throw new DomainValidationException("Incorrect start or end time");
-        //    StartTime = startTime;
-        //    EndTime = endTime;
-        //}
-
         // TODO (Application):
         // - Reject bookings in the past.
         // - Limit booking horizon to 7 days.
