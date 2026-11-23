@@ -1,5 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using SpacecraftMaintenanceStation.Application.Abstractions;
+using SpacecraftMaintenanceStation.Application.Abstractions.Persistence;
 using SpacecraftMaintenanceStation.Domain.Entities;
 using SpacecraftMaintenanceStation.Infrastructure.Persistence;
 

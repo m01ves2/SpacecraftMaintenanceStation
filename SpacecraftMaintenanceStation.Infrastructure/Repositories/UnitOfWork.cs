@@ -1,4 +1,4 @@
-﻿using SpacecraftMaintenanceStation.Application.Abstractions;
+﻿using SpacecraftMaintenanceStation.Application.Abstractions.Persistence;
 using SpacecraftMaintenanceStation.Infrastructure.Persistence;
 
 namespace SpacecraftMaintenanceStation.Infrastructure.Repositories

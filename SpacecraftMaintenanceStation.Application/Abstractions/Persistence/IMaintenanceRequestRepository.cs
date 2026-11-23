@@ -1,6 +1,6 @@
 ﻿using SpacecraftMaintenanceStation.Domain.Entities;
 
-namespace SpacecraftMaintenanceStation.Application.Abstractions
+namespace SpacecraftMaintenanceStation.Application.Abstractions.Persistence
 {
     public interface IMaintenanceRequestRepository
     {

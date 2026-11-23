@@ -1,7 +1,9 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using SpacecraftMaintenanceStation.Application.Abstractions.Persistence;
 using SpacecraftMaintenanceStation.Infrastructure.Persistence;
+using SpacecraftMaintenanceStation.Infrastructure.Repositories;
 
 namespace SpacecraftMaintenanceStation.Infrastructure
 {
@@ -15,6 +17,8 @@ namespace SpacecraftMaintenanceStation.Infrastructure
 
             // Repositories
             //services.AddScoped<IBayRepository, BayRepository>();
+            services.AddScoped<IUnitOfWork, UnitOfWork>();
+
 
             // DateTimeProvider
             return services;
