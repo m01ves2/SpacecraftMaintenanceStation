@@ -39,7 +39,7 @@ namespace SpacecraftMaintenanceStation.Domain.Entities
         public bool CanBeCancelled => CanChangeStatusTo(MaintenanceStatus.Cancelled);
 
         public int BayId { get; private set; }
-        public Bay Bay { get; private set; }
+        public Bay Bay { get; private set; } = null!;
 
         private MaintenanceRequest() 
         { 
