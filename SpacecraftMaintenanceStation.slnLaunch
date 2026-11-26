@@ -1,0 +1,15 @@
+[
+  {
+    "Name": "API + WASM",
+    "Projects": [
+      {
+        "Path": "SpacecraftMaintenanceStation.API\\SpacecraftMaintenanceStation.API.csproj",
+        "Action": "Start"
+      },
+      {
+        "Path": "SpacecraftMaintenanceStation.BlazorWasm\\SpacecraftMaintenanceStation.BlazorWasm.csproj",
+        "Action": "Start"
+      }
+    ]
+  }
+]
