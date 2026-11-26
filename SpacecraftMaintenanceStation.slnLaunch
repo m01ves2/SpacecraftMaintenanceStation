@@ -1,0 +1,11 @@
+[
+  {
+    "Name": "API only",
+    "Projects": [
+      {
+        "Path": "SpacecraftMaintenanceStation.API\\SpacecraftMaintenanceStation.API.csproj",
+        "Action": "Start"
+      }
+    ]
+  }
+]
