@@ -62,7 +62,6 @@
     private async Task LoadBaysAsync()
     {
         _bays = await Http.GetFromJsonAsync<BayModel[]>("api/bays/") ?? [];
-        var id = _bays[0].Id;
     }
 
 
