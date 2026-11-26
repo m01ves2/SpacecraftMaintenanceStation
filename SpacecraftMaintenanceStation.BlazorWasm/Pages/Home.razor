@@ -1,0 +1,78 @@
+﻿@page "/"
+@using SpacecraftMaintenanceStation.BlazorWasm.Models
+
+@inject HttpClient Http
+
+<PageTitle>Spacecraft Maintenance Station</PageTitle>
+
+<main class="chat-page lobby-page">
+    <h1>Week Schedule:</h1>
+
+    @if (_isLoading) {
+        <p>Checking bays schedules</p>
+    }
+    else if (_selectedBay is null) {
+        <section>
+            <h2>Select bay:</h2>
+
+            @* TODO: форма выбора Bay, ниспадающий список *@
+            <ul class="request-list">
+                @foreach (var bay in _bays) {
+                    <li>
+                        <a href="@($"/maintenanceRequests?bayId={bay.Id}")">@bay.Name</a>
+                    </li>
+                }
+            </ul>
+
+        </section>
+    }
+    else {
+        <header class="bay-header">
+            <p>Bay <strong>@_selectedBay.Name</strong></p>
+        </header>
+
+        <section>
+
+            @if (_requests.Length == 0) {
+                <p>No requests found</p>
+            }
+            else {
+                @* TODO список заявок по BayId *@
+                <ul class="request-list">
+                    @foreach (var request in _requests) {
+                        <li>
+                            <a href="@($"/maintenanceRequests?bayId={_selectedBay.Id}")">@request.CustomerName - @request.ContactPhone</a>
+                        </li>
+                    }
+                </ul>
+            }
+        </section>
+    }
+</main>
+
+@code {
+
+    private bool _isLoading = true;
+
+    private BayModel[] _bays = [];
+    private BayModel _selectedBay;
+
+    private MaintenanceRequestModel[] _requests = [];
+
+    private async Task LoadBaysAsync()
+    {
+        _bays = await Http.GetFromJsonAsync<BayModel[]>("api/bays/") ?? [];
+        var id = _bays[0].Id;
+    }
+
+
+    protected override async Task OnInitializedAsync()
+    {
+        try {
+            await LoadBaysAsync();
+        }
+        finally {
+            _isLoading = false;
+        }
+    }
+}

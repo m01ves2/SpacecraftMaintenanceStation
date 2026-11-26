@@ -1,6 +1,7 @@
 <Solution>
   <Project Path="SpacecraftMaintenanceStation.API/SpacecraftMaintenanceStation.API.csproj" Id="fb9e4457-e7ca-4bf1-a68a-ab0c690fc253" />
   <Project Path="SpacecraftMaintenanceStation.Application/SpacecraftMaintenanceStation.Application.csproj" Id="728bd91f-2055-431f-b1ce-0be59144b1bd" />
+  <Project Path="SpacecraftMaintenanceStation.BlazorWasm/SpacecraftMaintenanceStation.BlazorWasm.csproj" Id="e8376385-62fb-4499-84d4-ec0861bc9239" />
   <Project Path="SpacecraftMaintenanceStation.Domain/SpacecraftMaintenanceStation.Domain.csproj" />
   <Project Path="SpacecraftMaintenanceStation.Infrastructure/SpacecraftMaintenanceStation.Infrastructure.csproj" Id="3ef7127b-25a3-40c2-ad47-268f4489fa89" />
   <Project Path="SpacecraftMaintenanceStation.Tests/SpacecraftMaintenanceStation.Tests.csproj" />

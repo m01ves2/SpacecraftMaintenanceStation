@@ -5,6 +5,17 @@ using SpacecraftMaintenanceStation.Infrastructure.Persistence;
 
 var builder = WebApplication.CreateBuilder(args);
 
+var MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy(name: MyAllowSpecificOrigins,
+                      policy =>
+                      {
+                          policy.WithOrigins("https://localhost:7273",
+                                              "https://localhost:7165");
+                      });
+});
+
 // Add services to the container.
 
 builder.Services.AddControllers();
@@ -36,6 +47,8 @@ using (var scope = app.Services.CreateScope()) {
 }
 
 app.UseHttpsRedirection();
+
+app.UseCors(MyAllowSpecificOrigins);
 
 app.UseAuthorization();
 
