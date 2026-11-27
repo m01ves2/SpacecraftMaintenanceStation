@@ -25,11 +25,10 @@
             </ul>
 
         </section>
-    }
-    else {
-        <header class="bay-header">
+
+        @* <header class="bay-header">
             <p>Bay <strong>@_selectedBay.Name</strong></p>
-        </header>
+        </header> *@
 
         <section>
 
@@ -41,16 +40,41 @@
                 <ul class="request-list">
                     @foreach (var request in _requests) {
                         <li>
-                            <a href="@($"/maintenanceRequests?bayId={_selectedBay.Id}")">@request.CustomerName - @request.ContactPhone</a>
+                            <a href="@($"/maintenanceRequests?bayId={request.BayId}")">@request.CustomerName - @request.ContactPhone - @request.LocalStartTime - @request.LocalEndTime</a>
                         </li>
                     }
                 </ul>
+
+
+                <RadzenScheduler @ref=@scheduler
+                    AllowDateSelection="true" 
+                    SlotRender=@OnSlotRender 
+                    style="height: 768px;" 
+                    TItem="MaintenanceRequestModel"
+                    Data=@_requests
+                    StartProperty="@nameof(MaintenanceRequestModel.LocalStartTime)"
+                    EndProperty="@nameof(MaintenanceRequestModel.LocalEndTime)"
+                    ShowHeader=@showHeader                                 
+                    TextProperty="@nameof(MaintenanceRequestModel.CalendarText)"
+                    SlotSelect=@OnSlotSelect 
+                    AppointmentSelect=@OnAppointmentSelect 
+                    AppointmentRender=@OnAppointmentRender 
+                    DaySelect="@OnDaySelect"
+                    AppointmentMove=@OnAppointmentMove 
+                    AppointmentResize=@OnAppointmentResize
+                 >
+                    <RadzenWeekView StartTime="@TimeSpan.Zero"
+                                    EndTime="@TimeSpan.FromHours(24)" />
+                </RadzenScheduler>
+
             }
         </section>
     }
 </main>
 
 @code {
+    RadzenScheduler<MaintenanceRequestModel> scheduler;
+    bool showHeader = true;
 
     private bool _isLoading = true;
 
@@ -61,18 +85,126 @@
 
     private async Task LoadBaysAsync()
     {
-        _bays = await Http.GetFromJsonAsync<BayModel[]>("api/bays/") ?? [];
-        var id = _bays[0].Id;
+        _bays = await Http.GetFromJsonAsync<BayModel[]>($"api/bays") ?? [];
     }
 
+    private async Task LoadMaintenanceRequestsAsync()
+    {
+        var timeNow = DateTime.UtcNow;
+        var url = $"api/maintenanceRequests?bayId={_bays[0].Id}" +
+                  $"&startTime={timeNow.AddDays(-6):O}&endTime={timeNow.AddDays(1):O}";
+
+        _requests = await Http.GetFromJsonAsync<MaintenanceRequestModel[]>(url) ?? [];
+    }
 
     protected override async Task OnInitializedAsync()
     {
         try {
             await LoadBaysAsync();
+            await LoadMaintenanceRequestsAsync();
         }
         finally {
             _isLoading = false;
         }
+    }
+
+    void OnSlotRender(SchedulerSlotRenderEventArgs args)
+    {
+        // Highlight today in month view
+        // if (args.View.Text == "Month" && args.Start.Date == DateTime.Today) {
+        //     args.Attributes["style"] = "background: var(--rz-scheduler-highlight-background-color, rgba(255,220,40,.2));";
+        // }
+
+        // Highlight working hours (9-18)
+        // if ((args.View.Text == "Week" || args.View.Text == "Day") && args.Start.Hour > 8 && args.Start.Hour < 19) {
+        //     args.Attributes["style"] = "background: var(--rz-scheduler-highlight-background-color, rgba(255,220,40,.2));";
+        // }
+    }
+
+    async Task OnSlotSelect(SchedulerSlotSelectEventArgs args)
+    {
+        // console.Log($"SlotSelect: Start={args.Start} End={args.End}");
+
+        // if (args.View.Text != "Year") {
+        //     Appointment data = await DialogService.OpenAsync<AddAppointmentPage>("Add Appointment",
+        //         new Dictionary<string, object> { { "Start", args.Start }, { "End", args.End } });
+
+        //     if (data != null) {
+        //         appointments.Add(data);
+        //         Either call the Reload method or reassign the Data property of the Scheduler
+        //         await scheduler.Reload();
+        //     }
+        // }
+    }
+
+    async Task OnAppointmentSelect(SchedulerAppointmentSelectEventArgs<MaintenanceRequestModel> args)
+    {
+        // console.Log($"AppointmentSelect: Appointment={args.Data.Text}");
+
+        // var copy = new Appointment
+        // {
+        //     Start = args.Data.Start,
+        //     End = args.Data.End,
+        //     Text = args.Data.Text
+        // };
+
+        // var data = await DialogService.OpenAsync<EditAppointmentPage>("Edit Appointment", new Dictionary<string, object> { { "Appointment", copy } });
+
+        // if (data != null) {
+        //     Update the appointment
+        //     args.Data.Start = data.Start;
+        //     args.Data.End = data.End;
+        //     args.Data.Text = data.Text;
+        // }
+
+        // await scheduler.Reload();
+    }
+
+    void OnAppointmentRender(SchedulerAppointmentRenderEventArgs<MaintenanceRequestModel> args)
+    {
+        // Never call StateHasChanged in AppointmentRender - would lead to infinite loop
+
+        // if (args.Data.Text == "Birthday") {
+        //     args.Attributes["style"] = "background: red";
+        // }
+    }
+
+    void OnDaySelect(SchedulerDaySelectEventArgs args)
+    {
+        // console.Log($"DaySelect: Day={args.Day} AppointmentCount={args.Appointments.Count()}");
+    }
+
+    async Task OnAppointmentMove(SchedulerAppointmentMoveEventArgs args)
+    {
+        // var draggedAppointment = appointments.FirstOrDefault(x => x == args.Appointment.Data);
+
+        // if (draggedAppointment != null) {
+        //     var duration = draggedAppointment.End - draggedAppointment.Start;
+
+        //     if (args.SlotDate.TimeOfDay == TimeSpan.Zero) {
+        //         draggedAppointment.Start = args.SlotDate.Date.Add(draggedAppointment.Start.TimeOfDay);
+        //     }
+        //     else {
+        //         draggedAppointment.Start = args.SlotDate;
+        //     }
+
+        //     draggedAppointment.End = draggedAppointment.Start.Add(duration);
+
+        //     await scheduler.Reload();
+        // }
+    }
+
+    async Task OnAppointmentResize(SchedulerAppointmentResizeEventArgs args)
+    {
+        // var resizedAppointment = appointments.FirstOrDefault(x => x == args.Appointment.Data);
+
+        // if (resizedAppointment != null) {
+        //     resizedAppointment.Start = args.Start;
+        //     resizedAppointment.End = args.End;
+
+        //     console.Log($"AppointmentResize: Appointment={resizedAppointment.Text} Start={args.Start} End={args.End}");
+
+        //     await scheduler.Reload();
+        // }
     }
 }

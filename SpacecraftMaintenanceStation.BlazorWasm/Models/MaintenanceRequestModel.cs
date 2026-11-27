@@ -7,5 +7,10 @@
             DateTimeOffset StartTime,
             DateTimeOffset EndTime,
             string ProblemDescription,
-            string WorkDescription);
+            string WorkDescription)
+    {
+        public DateTime LocalStartTime => StartTime.LocalDateTime;
+        public DateTime LocalEndTime => EndTime.LocalDateTime;
+        public string CalendarText => string.IsNullOrWhiteSpace(ContactPhone) ? CustomerName : $"{CustomerName} · {ContactPhone}";
+    }
 }
